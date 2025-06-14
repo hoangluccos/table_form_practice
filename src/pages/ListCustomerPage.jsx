@@ -18,7 +18,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import userAva from "../assets/image/user.png";
 import { StatusChip } from "../components/StatusChip";
 import { fetchUserData } from "../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +26,7 @@ function ListCustomerPage() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.users);
   const users = useSelector((state) => state.users.users) || [];
-  // console.log("user redux", users);
+  console.log("user redux", users);
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
@@ -155,23 +154,18 @@ function ListCustomerPage() {
                     width: "100%",
                   }}
                 >
-                  {/* Cột 1: Checkbox + Avatar + Name */}
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                     <Checkbox />
-                    <Avatar src={userAva} sx={{ width: 32, height: 32 }} />
+                    <Avatar src={item.image} sx={{ width: 32, height: 32 }} />
                     <Typography>{item.firstName}</Typography>
                   </Box>
 
-                  {/* Cột 2: Gender */}
                   <StatusChip status={item.gender} />
 
-                  {/* Cột 3: Role */}
                   <Typography>{item.role}</Typography>
 
-                  {/* Cột 4: Email */}
                   <Typography>{item.email}</Typography>
 
-                  {/* Cột 5: Action */}
                   <MoreVertIcon sx={{ cursor: "pointer" }} />
                 </Box>
               </ListItem>
@@ -183,7 +177,7 @@ function ListCustomerPage() {
       {/* pagination */}
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
-          count={Math.ceil(users.length / rowsPerPage)} // tổng số trang
+          count={Math.ceil(users.length / rowsPerPage)}
           page={page}
           onChange={handlePageChange}
           shape="rounded"
