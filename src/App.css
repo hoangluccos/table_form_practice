@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+.MuiButton-root {
+  border-radius: 8px !important;
+  background: #ae3939 !important;
+  text-transform: capitalize !important;
+}
+.none-bg .MuiInputBase-root {
+  background-color: transparent !important;
+}
+.MuiListSubheader-root {
+  border-radius: 10px;
+}
+.MuiList-root {
+  background-color: #fafafa;
+  border-radius: 10px;
+}
