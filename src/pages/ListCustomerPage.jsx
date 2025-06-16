@@ -5,6 +5,8 @@ import {
   Button,
   Checkbox,
   Divider,
+  IconButton,
+  InputBase,
   ListSubheader,
   Pagination,
   TextField,
@@ -26,7 +28,7 @@ function ListCustomerPage() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.users);
   const users = useSelector((state) => state.users.users) || [];
-  console.log("user redux", users);
+  // console.log("user redux", users);
   const [page, setPage] = useState(1);
   const rowsPerPage = 10;
 
@@ -34,7 +36,7 @@ function ListCustomerPage() {
     (page - 1) * rowsPerPage,
     page * rowsPerPage
   );
-
+  console.log("log", paginatedUsers);
   const handlePageChange = (event, value) => {
     setPage(value);
   };
@@ -57,17 +59,17 @@ function ListCustomerPage() {
             <Button
               className="flex gap-1"
               variant="contained"
+              startIcon={<DownloadIcon />}
               onClick={() => console.log("click")}
             >
-              <DownloadIcon />
               Import
             </Button>
             <Button
               className="flex gap-1"
               variant="contained"
+              startIcon={<FileUploadIcon />}
               onClick={() => console.log("click")}
             >
-              <FileUploadIcon />
               Export
             </Button>
             <Button variant="contained" onClick={() => console.log("click")}>
@@ -82,23 +84,19 @@ function ListCustomerPage() {
       </div>
       {/* search - sort - setting more */}
       <div className="flex flex-row justify-between mt-2">
-        <div className="flex flex-row justify-center items-center h-[2rem] mt-2">
-          <SearchIcon />
-          <TextField
-            size="small"
-            sx={{
-              backgroundColor: "transparent",
-            }}
-            className="none-bg"
-            id="filled-search"
-            label="Search field"
-            type="search"
-            variant="filled"
-          />
+        <div className="flex flex-row justify-center items-center h-[2rem] mt-2 bg-gray-100 border border-gray-200 rounded-xs transition-colors ease-in-out focus-within:border-black">
+          <IconButton color="primary">
+            <SearchIcon />
+          </IconButton>
+          <InputBase placeholder="Search name of user" id="filled-search" />
         </div>
         <div className="flex flex-row gap-3 items-center justify-center">
-          <SwapVertIcon />
-          <MoreHorizIcon />
+          <IconButton color="primary">
+            <SwapVertIcon />
+          </IconButton>
+          <IconButton color="primary" id="filled-search">
+            <MoreHorizIcon />
+          </IconButton>
         </div>
       </div>
       {/* table */}
