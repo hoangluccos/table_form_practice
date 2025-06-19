@@ -5,22 +5,22 @@ export function StatusChip({ status }) {
     switch (status) {
       case "female":
         return {
-          label: "female",
+          label: "Female",
+          variant: "outlined",
           color: "success",
-          sx: { backgroundColor: "#ffebee" },
         };
       case "male":
         return {
-          label: "male",
+          label: "Male",
+          variant: "outlined",
           color: "warning",
-          sx: { backgroundColor: "#fff3e0" },
         };
       default:
-        return { label: "Unknown", color: "default" };
+        return { label: "Unknown", variant: "outlined" };
     }
   };
 
   const chipProps = getChipProps(status);
 
-  return <Chip {...chipProps} sx={{}} />;
+  return <Chip {...chipProps} sx={{ borderRadius: "12px" }} />;
 }

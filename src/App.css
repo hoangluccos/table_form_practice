@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
-.MuiButton-root {
-  border-radius: 8px !important;
-  background: #ae3939 !important;
+.MuiButton-text {
+  /* background: #f0f0f0 !important; */
+  color: black !important;
+  background: #f0f0f0 !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+.MuiButtonBase-root {
+  border-radius: 10px !important;
   text-transform: capitalize !important;
 }
-.none-bg .MuiInputBase-root {
-  background-color: transparent !important;
-}
 .MuiListSubheader-root {
-  border-radius: 10px;
+  padding: 0px 0px !important;
 }
-.MuiList-root {
-  background-color: #fafafa;
-  border-radius: 10px;
+.MuiListItem-root {
+  padding: 4px 0px !important;
+  background: #fefefe !important;
 }

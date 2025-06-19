@@ -3,16 +3,17 @@ import instance from "../../api/instance";
 
 const initialState = {
   users: null,
+  total: null,
   loading: false,
   error: null,
 };
 export const fetchUserData = createAsyncThunk(
   "users/fetchUserData",
-  async (_, { rejectWithValue }) => {
+  async (skip, { rejectWithValue }) => {
     try {
-      const res = await instance.get("/users");
+      const res = await instance.get(`/users?limit=10&skip=${skip}`);
       console.log("fetch successfully all users", res.data.users);
-      return res.data.users;
+      return { users: res.data.users, total: res.data.total };
     } catch (error) {
       const err = error;
       return rejectWithValue(err?.message || "Fetch users failed");
@@ -31,7 +32,8 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.loading = false;
-        state.users = action.payload;
+        state.users = action.payload.users;
+        state.total = action.payload.total;
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false;
