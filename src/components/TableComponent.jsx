@@ -22,12 +22,39 @@ import { fetchUserData } from "../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function TableComponent({ currentPage = 1, onPageChange }) {
+  //label and width
+  const label_fit = [
+    {
+      title: "gender",
+      width: "max-w-[150px]",
+      hasDes: true,
+      isCapitalize: true,
+      beRendered: (value) => <StatusChip status={value} />,
+    },
+    {
+      title: "role",
+      width: "max-w-[200px]",
+      hasDes: true,
+      isCapitalize: true,
+    },
+    {
+      title: "email",
+      width: "max-w-[350px]",
+      hasDes: true,
+      isCapitalize: false,
+    },
+    {
+      title: "action",
+      width: "max-w-[100px]",
+      hasDes: false,
+      isCapitalize: false,
+    },
+  ];
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.users);
   const users = useSelector((state) => state.users.users) || [];
   const total = useSelector((state) => state.users.total) || 1;
-  const [skip, setSkip] = useState(0);
-  console.log("user redux", users);
+  const [skip, setSkip] = useState(currentPage - 1);
   const rowsPerPage = 10;
   ``;
   const [selectedUsers, setSelectedUsers] = useState([]);
@@ -95,8 +122,16 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 />
                 FirstName
               </Typography>
-
-              <Typography
+              {label_fit.map((i, id) => (
+                <Typography
+                  key={id}
+                  sx={{ fontWeight: "bold" }}
+                  className={`flex flex-1 ${i.width} text-center justify-start items-center capitalize`}
+                >
+                  {i.title}
+                </Typography>
+              ))}
+              {/* <Typography
                 sx={{ fontWeight: "bold" }}
                 className="flex w-[200px] text-center justify-start items-center"
               >
@@ -122,7 +157,7 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 className="flex w-[100px] text-center justify-center items-center"
               >
                 Action
-              </Typography>
+              </Typography> */}
             </Stack>
           </ListSubheader>
         }
@@ -138,10 +173,59 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 <Avatar src={item.image} sx={{ width: 32, height: 32 }} />
                 <Typography>{item.firstName}</Typography>
               </Box>
+              {label_fit.map((i, id) => (
+                <Typography
+                  key={id}
+                  component={"div"}
+                  // sx={{ fontWeight: "bold" }}
+                  className={`flex flex-1 ${i.width} ${
+                    i.isCapitalize && "capitalize"
+                  } text-center justify-start items-center`}
+                >
+                  {i.hasDes ? (
+                    i.beRendered ? (
+                      i.beRendered(item[i.title])
+                    ) : (
+                      item[i.title]
+                    )
+                  ) : (
+                    <>
+                      <IconButton //using IconButton to remove bgcolor
+                        onClick={handleClick}
+                        sx={{
+                          padding: 0,
+                          "&:hover": {
+                            backgroundColor: "transparent",
+                          },
+                        }}
+                      >
+                        <MoreVertIcon sx={{ cursor: "pointer" }} />
+                      </IconButton>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        transitionDuration={"auto"}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        PaperProps={{
+                          elevation: 1,
+                        }}
+                      >
+                        <MenuItem onClick={handleClose}>Edit</MenuItem>
+                        <MenuItem onClick={handleClose}>Delete</MenuItem>
+                      </Menu>
+                    </>
+                  )}
+                </Typography>
+              ))}
 
-              <div className="flex w-[200px] justify-start">
+              {/* <Typography className="flex w-[200px] justify-start">
                 <StatusChip status={item.gender} />
-              </div>
+              </Typography>
 
               <Typography className="flex w-[200px] justify-start items-center capitalize">
                 {item.role}
@@ -180,7 +264,7 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                   <MenuItem onClick={handleClose}>Edit</MenuItem>
                   <MenuItem onClick={handleClose}>Delete</MenuItem>
                 </Menu>
-              </Typography>
+              </Typography> */}
             </ListItem>
             <Divider />
           </React.Fragment>

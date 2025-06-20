@@ -14,7 +14,7 @@ export const fetchUserData = createAsyncThunk(
       const res = await instance.get(
         `/users?limit=10&skip=${Number(skip) * 10}`
       );
-      console.log("fetch successfully all users", res.data.users);
+      // console.log("fetch successfully all users", res.data.users);
       return { users: res.data.users, total: res.data.total };
     } catch (error) {
       const err = error;
@@ -25,7 +25,16 @@ export const fetchUserData = createAsyncThunk(
 const userSlice = createSlice({
   name: "users",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    searchUser: (state, action) => {
+      const keyWord = action.payload.trim();
+      if (keyWord) {
+        state.users = state.users.filter((u) =>
+          u.firstName.toLowerCase().includes(keyWord.toLowerCase())
+        );
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserData.pending, (state) => {
@@ -44,3 +53,4 @@ const userSlice = createSlice({
   },
 });
 export default userSlice.reducer;
+export const { searchUser } = userSlice.actions;
