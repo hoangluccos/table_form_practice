@@ -4,6 +4,8 @@ import {
   Container,
   IconButton,
   InputBase,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
@@ -17,6 +19,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserData, searchUser } from "../redux/slices/userSlice";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 function ListCustomerPage() {
   const location = useLocation();
@@ -30,6 +33,14 @@ function ListCustomerPage() {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState("");
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClickFilter = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const handleSearch = () => {
     if (searchValue.trim()) {
       dispatch(searchUser(searchValue));
@@ -62,6 +73,43 @@ function ListCustomerPage() {
           voluptatibus.
         </p>
       </div>
+      <Box
+        marginY={"12px"}
+        padding={"12px 12px"}
+        bgcolor={"#F3F3F3"}
+        borderRadius={"8px"}
+      >
+        <Stack direction={"row"} alignItems={"center"}>
+          <Typography paddingX={"20px"}>User</Typography>
+          <Stack
+            flexGrow={2}
+            bgcolor={"#FDFDFD"}
+            paddingY={"8px"}
+            borderRadius={"4px"}
+            direction={"row"}
+            alignItems={"stretch"}
+            justifyContent={"space-between"}
+          >
+            <Box></Box>
+            <Button endIcon={<ExpandMoreIcon />} onClick={handleClickFilter}>
+              Add filter
+            </Button>
+            <Menu
+              anchorEl={anchorEl}
+              open={anchorEl}
+              onClose={handleClose}
+              PaperProps={{
+                sx: {
+                  width: anchorEl ? anchorEl.offsetWidth : undefined,
+                },
+              }}
+            >
+              <MenuItem onClick={handleClose}>Filter1</MenuItem>
+              <MenuItem onClick={handleClose}>Filter2</MenuItem>
+            </Menu>
+          </Stack>
+        </Stack>
+      </Box>
       {/* search - sort - setting more */}
       <div className="flex flex-row justify-between mt-2">
         <Box

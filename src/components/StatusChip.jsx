@@ -1,6 +1,9 @@
-import { Chip } from "@mui/material";
+import { Chip, useTheme, alpha } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+
 export function StatusChip({ status }) {
+  const theme = useTheme();
+
   const getChipProps = (status) => {
     switch (status) {
       case "female":
@@ -16,17 +19,31 @@ export function StatusChip({ status }) {
           color: "warning",
         };
       default:
-        return { label: "Unknown", variant: "outlined" };
+        return {
+          label: "Unknown",
+          variant: "outlined",
+          color: "default",
+        };
     }
   };
 
   const chipProps = getChipProps(status);
 
+  const chipBgColor = chipProps.color
+    ? alpha(theme.palette[chipProps.color].main, 0.08)
+    : undefined;
+
   return (
     <Chip
       icon={<FiberManualRecordIcon fontSize="inherit" />}
       {...chipProps}
-      sx={{ borderRadius: "12px" }}
+      sx={{
+        borderRadius: "12px",
+        fontWeight: "bold",
+        bgcolor: chipBgColor,
+        color: theme.palette[chipProps.color]?.main,
+        border: "none",
+      }}
     />
   );
 }
