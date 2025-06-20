@@ -22,7 +22,6 @@ import { fetchUserData } from "../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 function TableComponent({ currentPage = 1, onPageChange }) {
-  console.log("component ");
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.users);
   const users = useSelector((state) => state.users.users) || [];
@@ -65,6 +64,7 @@ function TableComponent({ currentPage = 1, onPageChange }) {
   useEffect(() => {
     dispatch(fetchUserData(skip));
   }, [dispatch, skip]);
+
   if (loading || error) {
     <div className="flex">
       <p>Loading</p>

@@ -11,7 +11,9 @@ export const fetchUserData = createAsyncThunk(
   "users/fetchUserData",
   async (skip, { rejectWithValue }) => {
     try {
-      const res = await instance.get(`/users?limit=10&skip=${skip}`);
+      const res = await instance.get(
+        `/users?limit=10&skip=${Number(skip) * 10}`
+      );
       console.log("fetch successfully all users", res.data.users);
       return { users: res.data.users, total: res.data.total };
     } catch (error) {

@@ -21,11 +21,10 @@ function ListCustomerPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Lấy query page từ URL
   const queryParams = new URLSearchParams(location.search);
-  console.log("location.search", location.search);
-  // console.log("split", location.search.split("="));
   const pageQuery = parseInt(queryParams.get("page")) || 1;
+  // const pageQuery = location.search.split("=")[1] || 1;
+  // const pageQuery = Number(location.search.split("=")[1] || 1);
 
   return (
     <Container>
