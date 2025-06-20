@@ -4,7 +4,10 @@ import {
   Box,
   Checkbox,
   Divider,
+  IconButton,
   ListSubheader,
+  Menu,
+  MenuItem,
   Pagination,
   Stack,
   Tooltip,
@@ -28,6 +31,31 @@ function TableComponent({ currentPage = 1, onPageChange }) {
   console.log("user redux", users);
   const rowsPerPage = 10;
   ``;
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const open = Boolean(anchorEl);
+
+  const handleToggleAll = () => {
+    if (selectedUsers.length === users.length) {
+      setSelectedUsers([]);
+    } else {
+      setSelectedUsers(users.map((i) => i.id));
+    }
+  };
+  const handleToggleOne = (id) => {
+    setSelectedUsers((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
 
   const handlePageChange = (event, value) => {
     setSkip(value - 1); //skip = 0
@@ -61,7 +89,10 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 sx={{ fontWeight: "bold" }}
                 className="flex w-[300px] items-center justify-start"
               >
-                <Checkbox />
+                <Checkbox
+                  onChange={handleToggleAll}
+                  // onChange={() => setSelectedUsers(users.map((i) => i.id))}
+                />
                 FirstName
               </Typography>
 
@@ -100,7 +131,10 @@ function TableComponent({ currentPage = 1, onPageChange }) {
           <React.Fragment key={index}>
             <ListItem className="flex flex-row bg-[#f0f0f0] py-[8px] px-[0px]">
               <Box className="flex flex-row w-[300px] items-center justify-start gap-1">
-                <Checkbox />
+                <Checkbox
+                  checked={selectedUsers.includes(item.id)}
+                  onChange={() => handleToggleOne(item.id)}
+                />
                 <Avatar src={item.image} sx={{ width: 32, height: 32 }} />
                 <Typography>{item.firstName}</Typography>
               </Box>
@@ -109,7 +143,7 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 <StatusChip status={item.gender} />
               </div>
 
-              <Typography className="flex w-[200px] justify-start items-center">
+              <Typography className="flex w-[200px] justify-start items-center capitalize">
                 {item.role}
               </Typography>
               <Tooltip title={item.email}>
@@ -118,12 +152,34 @@ function TableComponent({ currentPage = 1, onPageChange }) {
                 </Typography>
               </Tooltip>
               <Typography className="flex w-[100px] justify-center items-center">
-                {/* <Button> */}
-                <MoreVertIcon
-                  className="flex flex-1"
-                  sx={{ cursor: "pointer" }}
-                />
-                {/* </Button> */}
+                <IconButton //using IconButton to remove bgcolor
+                  onClick={handleClick}
+                  sx={{
+                    padding: 0,
+                    "&:hover": {
+                      backgroundColor: "transparent",
+                    },
+                  }}
+                >
+                  <MoreVertIcon sx={{ cursor: "pointer" }} />
+                </IconButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  transitionDuration={"auto"}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  PaperProps={{
+                    elevation: 1,
+                  }}
+                >
+                  <MenuItem onClick={handleClose}>Edit</MenuItem>
+                  <MenuItem onClick={handleClose}>Delete</MenuItem>
+                </Menu>
               </Typography>
             </ListItem>
             <Divider />

@@ -1,5 +1,5 @@
 import { Chip } from "@mui/material";
-
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 export function StatusChip({ status }) {
   const getChipProps = (status) => {
     switch (status) {
@@ -22,5 +22,11 @@ export function StatusChip({ status }) {
 
   const chipProps = getChipProps(status);
 
-  return <Chip {...chipProps} sx={{ borderRadius: "12px" }} />;
+  return (
+    <Chip
+      icon={<FiberManualRecordIcon fontSize="inherit" />}
+      {...chipProps}
+      sx={{ borderRadius: "12px" }}
+    />
+  );
 }
