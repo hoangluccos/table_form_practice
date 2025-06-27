@@ -6,7 +6,7 @@ function StepComponent({ title, des, isActive, onClick, isCompleted }) {
   return (
     <Step>
       <Box
-        className={`${isActive ? "bg-[#F5F5FF]" : ""}`}
+        className={`${isActive || isCompleted ? "bg-[#F5F5FF]" : ""}`}
         padding={1}
         width={"15rem"}
         borderBottom={`4px solid ${isActive ? "#261EAC" : "gray"}`}
@@ -16,7 +16,7 @@ function StepComponent({ title, des, isActive, onClick, isCompleted }) {
             <Typography
               variant="h6"
               fontWeight={"bold"}
-              className={isActive ? "text-[#261EAC]" : ""}
+              className={isActive || isCompleted ? "text-[#261EAC]" : ""}
             >
               {title}
             </Typography>

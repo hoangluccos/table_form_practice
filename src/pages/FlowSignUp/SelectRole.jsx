@@ -1,7 +1,6 @@
-import { Box, Button, Radio, RadioGroup, Typography } from "@mui/material";
+import { Box, Radio, Typography } from "@mui/material";
 import img_sample from "../../assets/image/user_img.jpg";
-import { useState } from "react";
-
+import { useFormContext } from "react-hook-form";
 const listSelect = [
   {
     name: "mentor",
@@ -13,10 +12,16 @@ const listSelect = [
   },
 ];
 function SelectRole() {
-  const [selectedValue, setSelectedValue] = useState("mentor");
-  const handleChange = (e) => {
-    console.log("target", e.target.value);
-    setSelectedValue(e.target.value);
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext();
+
+  const selectedValue = watch("role");
+  const handleSelect = (value) => {
+    setValue("role", value, { shouldValidate: true });
   };
   return (
     <Box className="flex flex-col items-center gap-2 my-[3rem]">
@@ -26,9 +31,12 @@ function SelectRole() {
       <Box className="flex gap-x-8">
         {listSelect.map((select, index) => (
           <Box
-            onClick={handleChange}
             key={index}
-            className="flex flex-col w-[12rem] h-[16rem] rounded-md p-2 border border-gray-400 shadow-2xl shadow-gray-500"
+            onClick={() => handleSelect(select.name)}
+            className={`flex flex-col w-[12rem] h-[16rem] rounded-md p-2 border 
+              ${
+                selectedValue === select.name ? "shadow-md" : ""
+              } cursor-pointer`}
           >
             <Box
               sx={{
@@ -38,8 +46,8 @@ function SelectRole() {
               }}
             >
               <Radio
+                {...register("role")}
                 checked={selectedValue === select.name}
-                onChange={handleChange}
                 value={select.name}
               />
               <Typography className="capitalize">{select.name}</Typography>
@@ -54,6 +62,11 @@ function SelectRole() {
           </Box>
         ))}
       </Box>
+      {errors.role && (
+        <Typography color="error" fontSize={14}>
+          {errors.role.message}
+        </Typography>
+      )}
     </Box>
   );
 }

@@ -1,6 +1,7 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 
+//this component is reuseable with no validate
 function RowTextField({
   is1Item = false,
   titleOnly,
