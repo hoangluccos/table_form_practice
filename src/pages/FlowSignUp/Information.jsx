@@ -18,8 +18,8 @@ function Information() {
     formState: { errors },
   } = useFormContext();
   return (
-    <Box mt={2}>
-      <Stack direction="row" spacing={2} mb={2}>
+    <Box>
+      <Stack direction="row" spacing={2} height={"100px"}>
         <Box flex={1}>
           <Typography>Họ và tên*</Typography>
           <TextField
@@ -61,7 +61,7 @@ function Information() {
           )}
         </Box>
       </Stack>
-      <Stack direction="row" spacing={2} mb={2}>
+      <Stack direction="row" spacing={2} height={"100px"}>
         <Box flex={1}>
           <Typography>Email*</Typography>
           <TextField
@@ -92,7 +92,7 @@ function Information() {
         </Box>
       </Stack>
 
-      <Box mt={2} mb={2}>
+      <Box height={"100px"}>
         <Typography>LinkeIn của anh/chị*</Typography>
         <TextField
           fullWidth
@@ -106,7 +106,7 @@ function Information() {
           </Typography>
         )}
       </Box>
-      <Box mt={2} mb={2}>
+      <Box height={"100px"}>
         <Typography>Social media link*</Typography>
         <TextField
           fullWidth

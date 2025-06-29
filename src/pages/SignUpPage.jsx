@@ -5,10 +5,10 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SelectRole from "./FlowSignUp/SelectRole";
 import Information from "./FlowSignUp/Information";
-import Sharing from "./FlowSignUp/Sharing";
-import { step1Schema, step2Schema } from "../utils/validateSchema";
+import { step1Schema, step2Schema, step3Schema } from "../utils/validateSchema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SharingMentor from "./FlowSignUp/SharingMentor";
 const listStepArr = [
   {
     title: "Bước 1",
@@ -23,7 +23,7 @@ const listStepArr = [
     des: "Nội dung chia sẽ",
   },
 ];
-const schemas = [step1Schema, step2Schema];
+const schemas = [step1Schema, step2Schema, step3Schema];
 function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
@@ -31,7 +31,7 @@ function SignUpPage() {
   //create concrete useForm
   const method = useForm({
     resolver: zodResolver(schemas[activeStep]),
-    mode: "onChange", // 👈 validate khi người dùng nhập
+    mode: "onChange",
     criteriaMode: "all",
     defaultValues: {
       role: "",
@@ -77,11 +77,14 @@ function SignUpPage() {
       case 1:
         return <Information />;
       case 2:
-        return <Sharing />;
+        return <SharingMentor />;
       default:
         return <SelectRole />;
     }
   };
+  const {
+    formState: { isValid },
+  } = method;
   return (
     <FormProvider {...method}>
       <Box>
@@ -108,7 +111,7 @@ function SignUpPage() {
           </Box>
         </Stepper>
         <div className="">
-          <Box>{renderStep()}</Box>
+          <Box mt={8}>{renderStep()}</Box>
           {/* forward and back button */}
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
@@ -119,10 +122,15 @@ function SignUpPage() {
               Trở về
             </Button>
             <Button
+              disabled={!isValid}
               endIcon={<ArrowForwardIcon />}
-              className={`!font-bold !text-white ${
-                !isFinalStep() ? "!bg-[#261EAC]" : "!bg-amber-500"
-              }`}
+              className={`!font-bold  ${
+                !isValid
+                  ? "!bg-white !text-[#261EAC] !border !border-[#261EAC]"
+                  : !isFinalStep()
+                  ? "!bg-[#261EAC] !text-white"
+                  : "!bg-amber-500 !text-white"
+              } `}
               onClick={handleNext}
             >
               {isFinalStep() ? "Hoàn tất" : "Tiếp tục"}

@@ -17,3 +17,6 @@ export const step2Schema = z.object({
   linkedin: z.string().url("LinkedIn không hợp lệ"),
   social: z.string().url("Link không hợp lệ"),
 });
+export const step3Schema = z.object({
+  sharing: z.string().min(3, "Sharing không được để trống"),
+});
