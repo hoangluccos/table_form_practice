@@ -17,6 +17,11 @@ export const step2Schema = z.object({
   linkedin: z.string().url("LinkedIn không hợp lệ"),
   social: z.string().url("Link không hợp lệ"),
 });
-export const step3Schema = z.object({
-  sharing: z.string().min(3, "Sharing không được để trống"),
+export const step3SchemaMentor = z.object({
+  objectMentees: z.array(z.string()).min(1, "Vui lòng chọn 1 đối tượng"),
+  sharingTopic: z.array(z.string()).min(1, "Vui lòng chọn 1 đối tượng"),
+});
+export const step3SchemaEducator = z.object({
+  experience: z.string().min(1, "Vui lòng chọn kinh nghiêm"),
+  expertise: z.array(z.string()).min(1, "Vui lòng chọn 1 chuyên môn"),
 });

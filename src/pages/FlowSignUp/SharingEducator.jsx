@@ -8,8 +8,8 @@ import {
 } from "@mui/material";
 import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 import { Controller, useFormContext } from "react-hook-form";
-const Mentees = ["Sinh viên mới tốt nghiệp", "Fresher", "Junior", "Senior"];
-const SharingType = [
+const experience = ["Sinh viên mới tốt nghiệp", "1 năm", "2 năm", "3 năm"];
+const expertise = [
   "Career coach",
   "Podcast",
   "Football",
@@ -17,7 +17,7 @@ const SharingType = [
   "Language",
   "Photo",
 ];
-function SharingMentor() {
+const SharingEducator = () => {
   const {
     control,
     formState: { errors },
@@ -26,57 +26,46 @@ function SharingMentor() {
     <Box marginY={"2"} maxWidth={"100%"}>
       <Stack direction="row" spacing={2} width={"100%"}>
         <Box flex={1} sx={{ width: "100%", maxWidth: "100%" }}>
-          <Typography>Đối tượng mentee của bạn *</Typography>
+          <Typography>Kinh nghiệm</Typography>
           <Controller
-            name="objectMentees"
+            name="experience"
             control={control}
             render={({ field }) => (
               <Autocomplete
-                multiple
                 className="my-2"
-                options={Mentees}
+                options={experience}
                 autoComplete
-                value={field.value || []}
+                value={field.value || ""}
                 onChange={(_, newValue) => field.onChange(newValue)}
                 //let user input doesn't bound with search option
                 freeSolo
                 clearIcon={<CancelPresentationIcon />}
                 getOptionLabel={(option) => option} //if typeof option === "string" ? option : option.label ?? ''
                 //renderValue use for custom Chip
-                renderValue={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip
-                      label={option}
-                      {...getTagProps({ index })}
-                      sx={{
-                        fontWeight: "bold",
-                      }}
-                    />
-                  ))
-                }
+
                 renderInput={(params) => (
                   <TextField {...params} variant="outlined" />
                 )}
               />
             )}
           />
-          {errors.objectMentees && (
+          {errors.experience && (
             <Typography color="error" fontSize={14}>
-              {errors.objectMentees.message}
+              {errors.experience.message}
             </Typography>
           )}
         </Box>
 
         <Box flex={1} sx={{ width: "100%", maxWidth: "100%" }}>
-          <Typography>Nội dung chia sẽ</Typography>
+          <Typography>Chuyên môn</Typography>
           <Controller
-            name="sharingTopic"
+            name="expertise"
             control={control}
             render={({ field }) => (
               <Autocomplete
                 multiple
                 className="my-2 "
-                options={SharingType}
+                options={expertise}
                 autoComplete
                 value={field.value || []}
                 onChange={(_, newValue) => field.onChange(newValue)}
@@ -99,15 +88,15 @@ function SharingMentor() {
               />
             )}
           />
-          {errors.sharingTopic && (
+          {errors.expertise && (
             <Typography color="error" fontSize={14}>
-              {errors.sharingTopic.message}
+              {errors.expertise.message}
             </Typography>
           )}
         </Box>
       </Stack>
     </Box>
   );
-}
+};
 
-export default SharingMentor;
+export default SharingEducator;

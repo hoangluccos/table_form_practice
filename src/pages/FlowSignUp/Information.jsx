@@ -1,7 +1,7 @@
 import { Box, MenuItem, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
 import RowTextField from "../../components/RowTextField";
-import { useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 const howToCall = [
   {
     label: "Anh",
@@ -14,6 +14,7 @@ const howToCall = [
 ];
 function Information() {
   const {
+    control,
     register,
     formState: { errors },
   } = useFormContext();
@@ -37,25 +38,32 @@ function Information() {
 
         <Box flex={1}>
           <Typography>Cách xưng hô?</Typography>
-          <TextField
-            select
-            fullWidth
-            size="small"
-            className="!my-2"
-            {...register("called")}
-          >
-            {howToCall.map((i, index) => (
-              <MenuItem
-                value={i?.value}
-                className="!bg-transparent hover:!bg-gray-100"
-                key={index}
+          <Controller
+            name="called"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                select
+                fullWidth
+                size="small"
+                className="!my-2"
+                {...field}
+                value={field.value || ""}
               >
-                {i?.label}
-              </MenuItem>
-            ))}
-          </TextField>
+                {howToCall.map((i, index) => (
+                  <MenuItem
+                    value={i?.value}
+                    className="!bg-transparent hover:!bg-gray-100"
+                    key={index}
+                  >
+                    {i?.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
           {errors.called && (
-            <Typography color="error" fontSize={14} {...register("called")}>
+            <Typography color="error" fontSize={14}>
               {errors.called.message}
             </Typography>
           )}

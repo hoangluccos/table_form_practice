@@ -5,10 +5,16 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SelectRole from "./FlowSignUp/SelectRole";
 import Information from "./FlowSignUp/Information";
-import { step1Schema, step2Schema, step3Schema } from "../utils/validateSchema";
+import {
+  step1Schema,
+  step2Schema,
+  step3SchemaEducator,
+  step3SchemaMentor,
+} from "../utils/validateSchema";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SharingMentor from "./FlowSignUp/SharingMentor";
+import SharingEducator from "./FlowSignUp/SharingEducator";
 const listStepArr = [
   {
     title: "Bước 1",
@@ -23,11 +29,20 @@ const listStepArr = [
     des: "Nội dung chia sẽ",
   },
 ];
-const schemas = [step1Schema, step2Schema, step3Schema];
+const schemas = [
+  step1Schema,
+  step2Schema,
+  step3SchemaEducator,
+  step3SchemaMentor,
+];
 function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
 
+  //watch realtime role value
+  // const role = method.watch("role");
+
+  // const currentSchema = activeStep === 2 ? role === "mentor" ? step3SchemaMentor : step3SchemaEducator : schemas[activeStep];
   //create concrete useForm
   const method = useForm({
     resolver: zodResolver(schemas[activeStep]),
@@ -41,28 +56,36 @@ function SignUpPage() {
       phone: "",
       linkedin: "",
       social: "",
+      objectMentees: "",
+      sharingTopic: "",
+      experience: "",
+      expertise: "",
     },
   });
 
   console.log("completed", completed);
 
   const isFinalStep = () => {
-    console.log("isFinalStep", activeStep === listStepArr.length - 1);
+    console.log("isFinalStep", activeStep);
     return activeStep === listStepArr.length - 1; //true or false
   };
 
+  //watch realtime role value
+  const role = method.watch("role");
   const handleNext = async () => {
     const valid = await method.trigger();
     if (!valid) return;
     if (!isFinalStep()) {
       // console.log("Click step - index", index);
+      setActiveStep((prev) => prev + 1);
       setCompleted((prev) => {
         return { ...prev, [activeStep]: true };
       });
-      setActiveStep((prev) => prev + 1);
     } else {
       //do something
       console.log("Ending form");
+      const data = method.getValues();
+      console.log("data form", data);
     }
   };
 
@@ -77,7 +100,8 @@ function SignUpPage() {
       case 1:
         return <Information />;
       case 2:
-        return <SharingMentor />;
+        return role === "mentor" ? <SharingMentor /> : <SharingEducator />;
+
       default:
         return <SelectRole />;
     }

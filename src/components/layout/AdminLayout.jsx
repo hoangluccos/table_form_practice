@@ -1,4 +1,11 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Container,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import AdbIcon from "@mui/icons-material/Adb";
 import { useNavigate } from "react-router";
 
@@ -44,7 +51,9 @@ function AdminLayout({ children }) {
           </Box>
         </Toolbar>
       </AppBar>
-      <Box>{children}</Box>
+      <Container maxWidth="lg">
+        <Box>{children}</Box>
+      </Container>
     </div>
   );
 }
