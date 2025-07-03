@@ -1,6 +1,6 @@
 import { Box, Button, Stack, Stepper, Typography } from "@mui/material";
 import StepComponent from "../components/StepComponent";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SelectRole from "./FlowSignUp/SelectRole";
@@ -15,6 +15,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SharingMentor from "./FlowSignUp/SharingMentor";
 import SharingEducator from "./FlowSignUp/SharingEducator";
+
 const listStepArr = [
   {
     title: "Bước 1",
@@ -29,23 +30,18 @@ const listStepArr = [
     des: "Nội dung chia sẽ",
   },
 ];
-const schemas = [
-  step1Schema,
-  step2Schema,
-  step3SchemaEducator,
-  step3SchemaMentor,
-];
+// const schemas = [
+//   step1Schema,
+//   step2Schema,
+//   step3SchemaEducator,
+//   step3SchemaMentor,
+// ];
 function SignUpPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState({});
 
-  //watch realtime role value
-  // const role = method.watch("role");
-
-  // const currentSchema = activeStep === 2 ? role === "mentor" ? step3SchemaMentor : step3SchemaEducator : schemas[activeStep];
   //create concrete useForm
   const method = useForm({
-    resolver: zodResolver(schemas[activeStep]),
     mode: "onChange",
     criteriaMode: "all",
     defaultValues: {
@@ -56,27 +52,50 @@ function SignUpPage() {
       phone: "",
       linkedin: "",
       social: "",
-      objectMentees: "",
-      sharingTopic: "",
+      objectMentees: [],
+      sharingTopic: [],
       experience: "",
-      expertise: "",
+      expertise: [],
     },
   });
 
   console.log("completed", completed);
-
-  const isFinalStep = () => {
-    console.log("isFinalStep", activeStep);
-    return activeStep === listStepArr.length - 1; //true or false
-  };
+  console.log("activeStep", activeStep);
 
   //watch realtime role value
   const role = method.watch("role");
+
+  const currentSchema = useMemo(() => {
+    if (activeStep === 0) return step1Schema;
+    if (activeStep === 1) return step2Schema;
+    if (activeStep === 2) {
+      return role === "mentor" ? step3SchemaMentor : step3SchemaEducator;
+    }
+    return step1Schema;
+  }, [activeStep, role]);
+
+  // 🧠 Cập nhật resolver khi schema thay đổi
+  useMemo(() => {
+    method.reset(method.getValues(), {
+      keepDefaultValues: true,
+      keepValues: true,
+    });
+    method.control._options.resolver = zodResolver(currentSchema);
+  }, [currentSchema]);
+
+  const isFinalStep = useMemo(() => {
+    console.log("isFinalStep()", activeStep);
+    console.log(
+      "true or false isFinalStep()",
+      activeStep === listStepArr.length - 1
+    );
+    return activeStep === listStepArr.length - 1; //true or false
+  }, [activeStep]);
+
   const handleNext = async () => {
-    const valid = await method.trigger();
-    if (!valid) return;
-    if (!isFinalStep()) {
-      // console.log("Click step - index", index);
+    // const valid = await method.trigger(); //=> no more need validate before next because isValid is used for disable button
+    // if (!valid) return;
+    if (!isFinalStep) {
       setActiveStep((prev) => prev + 1);
       setCompleted((prev) => {
         return { ...prev, [activeStep]: true };
@@ -151,13 +170,13 @@ function SignUpPage() {
               className={`!font-bold  ${
                 !isValid
                   ? "!bg-white !text-[#261EAC] !border !border-[#261EAC]"
-                  : !isFinalStep()
+                  : !isFinalStep
                   ? "!bg-[#261EAC] !text-white"
                   : "!bg-amber-500 !text-white"
               } `}
               onClick={handleNext}
             >
-              {isFinalStep() ? "Hoàn tất" : "Tiếp tục"}
+              {isFinalStep ? "Hoàn tất" : "Tiếp tục"}
             </Button>
           </Stack>
         </div>

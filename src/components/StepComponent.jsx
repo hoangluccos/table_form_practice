@@ -2,7 +2,7 @@ import { Box, Stack, Step, StepButton, Typography } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function StepComponent({ title, des, isActive, onClick, isCompleted }) {
-  console.log("isCompleted", isCompleted);
+  // console.log("isCompleted", isCompleted);
   return (
     <Step>
       <Box
