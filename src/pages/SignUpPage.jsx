@@ -112,7 +112,7 @@ function SignUpPage() {
     setActiveStep((prev) => prev - 1);
   };
 
-  const renderStep = () => {
+  const renderStep = useMemo(() => {
     switch (activeStep) {
       case 0:
         return <SelectRole />;
@@ -124,7 +124,7 @@ function SignUpPage() {
       default:
         return <SelectRole />;
     }
-  };
+  }, [activeStep]);
   const {
     formState: { isValid },
   } = method;
@@ -154,7 +154,7 @@ function SignUpPage() {
           </Box>
         </Stepper>
         <div className="">
-          <Box mt={8}>{renderStep()}</Box>
+          <Box mt={8}>{renderStep}</Box>
           {/* forward and back button */}
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
