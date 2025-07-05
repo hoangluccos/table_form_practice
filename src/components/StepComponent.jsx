@@ -3,6 +3,15 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 function StepComponent({ title, des, isActive, onClick, isCompleted }) {
   // console.log("isCompleted", isCompleted);
+  const handleClick = () => {
+    //handleClick if isCompleted
+    if (isCompleted) {
+      // console.log("completed roi nha");
+      onClick();
+    } else {
+      // console.log("chua completed");
+    }
+  };
   return (
     <Step>
       <Box
@@ -11,7 +20,7 @@ function StepComponent({ title, des, isActive, onClick, isCompleted }) {
         width={"15rem"}
         borderBottom={`4px solid ${isActive ? "#261EAC" : "gray"}`}
       >
-        <StepButton>
+        <StepButton onClick={handleClick}>
           <Box display={"flex"} alignItems={"center"} columnGap={"8px"}>
             <Typography
               variant="h6"

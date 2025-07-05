@@ -24,4 +24,5 @@ export const step3SchemaMentor = z.object({
 export const step3SchemaEducator = z.object({
   experience: z.string().min(1, "Vui lòng chọn kinh nghiêm"),
   expertise: z.array(z.string()).min(1, "Vui lòng chọn 1 chuyên môn"),
+  image: z.array(z.object()).min(1, "Vui lòng chọn 1 ảnh"),
 });

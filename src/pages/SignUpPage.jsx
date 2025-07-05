@@ -108,6 +108,9 @@ function SignUpPage() {
     }
   };
 
+  const handleClickOnStep = (index) => {
+    setActiveStep(index);
+  };
   const handleBack = () => {
     setActiveStep((prev) => prev - 1);
   };
@@ -146,7 +149,7 @@ function SignUpPage() {
                 title={item.title}
                 des={item.des}
                 //-------
-                // onClick={() => handleNext(index)}
+                onClick={() => handleClickOnStep(index)}
                 isCompleted={completed[index]}
                 isActive={activeStep === index}
               />
